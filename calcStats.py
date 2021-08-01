@@ -21,11 +21,12 @@ def csv_reader(file_name):
 def logic(row: list, groud_truth: dict, exchanges: list, 
     moneys: dict = {'b': 0.0, 's': 0.0})-> dict:
     '''
-    ground_truth contains the current number of shares of a given symbol (SymbolPosition),
+    ground_truth contains the current number of shares, the number of shares sold, and
+    number of shares bought of a given symbol (SymbolPosition, SymbolBought, SymbolSold),
     and the number of shares bought and sold in a given exchange (ExchangeBought, 
     ExchangeSold)
     schema:
-    {symbol: {'current': shares, 'b': shares, 's': shares},
+    {symbol: {'c': shares, 'b': shares, 's': shares},
     exchange: {'b': shares, 's':shares}}
     '''
     tail = [0] * 10
