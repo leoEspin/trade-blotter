@@ -1,16 +1,12 @@
 # Trade blotter
 
-The goal of this project is to consume a trade blotter for a portfolio
+The goal is to consume a trade blotter for a portfolio
 and calculate various financial metrics, chiefly the profit made (or
 loss taken).
 
 A trade blotter contains a record of all trades that were executed on an
 exchange (also called a 'fill') for a given portfolio. Each line in the
 trade blotter provides the details of a fill.
-
-For the purposes of this exercise, please assume that we are starting
-with a completely empty portfolio (i.e., the portfolio consists only of
-stocks acquired by trades in the trade blotter).
 
 Data Format
 -----------
@@ -70,7 +66,7 @@ The following describes each of the columns:
 PROJECT DEFINITION
 ==================
 
-Write a python script that consumes the above CSV file and produces an
+The script `calcStats.py` consumes the above CSV file and produces an
 enriched version of the CSV file with the additional columns described
 below.
 
@@ -105,7 +101,7 @@ The output is composed of two components:
 Enriched Version Columns
 ------------------------
 
-The output should be an enriched version of the input CSV file which
+The output is an enriched version of the input CSV file which
 adds the following columns to the original file and populates it on
 a **trade-by-trade** basis:
 
