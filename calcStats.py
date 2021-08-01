@@ -18,7 +18,8 @@ def csv_reader(file_name):
     for row in list_line:
         yield row
         
-def logic(row: list, groud_truth: dict, exchanges: list)-> dict:
+def logic(row: list, groud_truth: dict, exchanges: list, 
+    moneys: dict = {'b': 0.0, 's': 0.0})-> dict:
     '''
     ground_truth contains the current number of shares of a given symbol (SymbolPosition),
     and the number of shares bought and sold in a given exchange (ExchangeBought, 
@@ -37,6 +38,7 @@ def logic(row: list, groud_truth: dict, exchanges: list)-> dict:
         sign = -1
     bfactor = int(sign > 0)
     sfactor = int(sign < 0)
+
     if row[1] not in groud_truth.keys():
         groud_truth[row[1]] = {
             'c': sign * row[4],
@@ -54,6 +56,9 @@ def logic(row: list, groud_truth: dict, exchanges: list)-> dict:
         groud_truth[row[6]]['b'] += bfactor * row[4]
         groud_truth[row[6]]['s'] += sfactor * row[4]
 
+    moneys['b'] += bfactor * row[4] * row[5]
+    moneys['s'] += sfactor * row[4] * row[5]
+
     tail[0] = groud_truth[row[1]]['b']
     tail[1] = groud_truth[row[1]]['s']   
     tail[2] = groud_truth[row[1]]['c'] 
@@ -62,17 +67,20 @@ def logic(row: list, groud_truth: dict, exchanges: list)-> dict:
     tail[5] = groud_truth[row[6]]['s']
     tail[6] = sum(groud_truth[ex]['b'] for ex in exchanges)
     tail[7] = sum(groud_truth[ex]['s'] for ex in exchanges)     
-    return tail, groud_truth, exchanges
+    tail[8] = moneys['b']
+    tail[9] = moneys['s']
+    return tail, groud_truth, exchanges, moneys
 
 def calcTradeStats(input:str, output: str):
     the_truth = {}
     exchanges = []
+    totals = {'b': 0.0, 's': 0.0}
     for row in csv_reader(input):
-        extended, the_truth, exchanges = logic(row, the_truth, exchanges)
+        extended, the_truth, exchanges, totals = logic(row, the_truth, exchanges, totals)
         print(row + extended)    
     return the_truth
 
 if __name__ == '__main__':
     args = parcero()
-    out = calcTradeStats(args.input, args.output)
-    print(out)
+    calcTradeStats(args.input, args.output)
+
