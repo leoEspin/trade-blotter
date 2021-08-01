@@ -24,39 +24,43 @@ def logic(row: list, groud_truth: dict)-> dict:
     and the number of shares bought and sold in a given exchange (ExchangeBought, 
     ExchangeSold)
     schema:
-    {symbol: #shares,
+    {symbol: {'current': shares, 'b': shares, 's': shares},
     exchange: {'b': shares, 's':shares}}
     '''
     tail = [0] * 10
     row[4] = int(row[4])
     row[5] = float(row[5])
-    tail[3] = row[4] * row[5]
 
-    if row[3] == 'b':
-        if row[1] not in groud_truth.keys():
-            groud_truth[row[1]] = row[4]
-            tail[0] = row[4]
-        else:
-            groud_truth[row[1]] += row[4]
-            tail[0] += row[4]
-        if row[6] not in groud_truth.keys():
-            groud_truth[row[6]] = {'b': row[4], 's': 0}
-        else:
-            groud_truth[row[6]]['b'] += row[4]            
-    else: 
-        if row[1] not in groud_truth.keys():
-            groud_truth[row[1]] = -row[4]
-            tail[1] = row[4]
-        else:
-            groud_truth[row[1]] -= row[4]
-            tail[1] += row[4]
-        if row[6] not in groud_truth.keys():
-            groud_truth[row[6]] = {'b': 0, 's': row[4]}
-        else:
-            groud_truth[row[6]]['s'] += row[4]  
-    tail[2] = groud_truth[row[1]]
+    if row[3] == 'b':   
+        sign = 1
+    else:
+        sign = -1
+    bfactor = int(sign > 0)
+    sfactor = int(sign < 0)
+    if row[1] not in groud_truth.keys():
+        groud_truth[row[1]] = {
+            'c': sign * row[4],
+            'b': bfactor * row[4], 
+            's': sfactor * row[4]}
+    else:
+        groud_truth[row[1]]['c'] += sign * row[4]
+        groud_truth[row[1]]['b'] += bfactor * row[4]
+        groud_truth[row[1]]['s'] += sfactor * row[4]
+
+    if row[6] not in groud_truth.keys():
+        groud_truth[row[6]] = {'b': bfactor * row[4], 's': sfactor * row[4]}
+    else:
+        groud_truth[row[6]]['b'] += bfactor * row[4]
+        groud_truth[row[6]]['s'] += sfactor * row[4]
+
+    tail[0] = groud_truth[row[1]]['b']
+    tail[1] = groud_truth[row[1]]['s']   
+    tail[2] = groud_truth[row[1]]['c'] 
+    tail[3] = row[4] * row[5]
     tail[4] = groud_truth[row[6]]['b']
     tail[5] = groud_truth[row[6]]['s']
+
+
     return tail, groud_truth
 
 def calcTradeStats(input:str, output: str):
@@ -68,4 +72,5 @@ def calcTradeStats(input:str, output: str):
 
 if __name__ == '__main__':
     args = parcero()
-    calcTradeStats(args.input, args.output)
+    out = calcTradeStats(args.input, args.output)
+    print(out)
