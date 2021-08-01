@@ -19,10 +19,19 @@ def csv_reader(file_name):
         yield row
         
 def logic(row: list, groud_truth: dict)-> dict:
+    '''
+    ground_truth contains the current number of shares of a given symbol (SymbolPosition),
+    and the number of shares bought and sold in a given exchange (ExchangeBought, 
+    ExchangeSold)
+    schema:
+    {symbol: #shares,
+    exchange: {'b': shares, 's':shares}}
+    '''
     tail = [0] * 10
     row[4] = int(row[4])
     row[5] = float(row[5])
     tail[3] = row[4] * row[5]
+
     if row[3] == 'b':
         if row[1] not in groud_truth.keys():
             groud_truth[row[1]] = row[4]
@@ -55,6 +64,7 @@ def calcTradeStats(input:str, output: str):
     for row in csv_reader(input):
         extended, the_truth = logic(row, the_truth)
         print(row + extended)    
+    return the_truth
 
 if __name__ == '__main__':
     args = parcero()
