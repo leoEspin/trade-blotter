@@ -69,7 +69,7 @@ The script `calcStats.py` consumes the above CSV file and produces an
 enriched version of the CSV file with the additional columns described
 below.
 
-The python script should be callable in the following ways:
+The python script is callable in the following ways:
 
 1.  From the command line via:
 
