@@ -89,10 +89,10 @@ def calcTradeStats(input:str, output: str):
             ]
         with open(output, 'w') as f:
             f.write(','.join(names))
-            f.writelines(str(row)[1:-1] + '\n' for row in blotter(input))
+            f.writelines(','.join(str(x) for x in row) + '\n' for row in blotter(input))
     else:
         for row in blotter(input):
-            print(row)
+            print(','.join(str(x) for x in row))
 
 if __name__ == '__main__':
     args = parcero()
