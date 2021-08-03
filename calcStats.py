@@ -72,14 +72,27 @@ def logic(row: list, groud_truth: dict, exchanges: list,
     tail[9] = moneys['s']
     return tail, groud_truth, exchanges, moneys
 
-def calcTradeStats(input:str, output: str):
+def blotter(input:str):
     the_truth = {}
     exchanges = []
     totals = {'b': 0.0, 's': 0.0}
     for row in csv_reader(input):
         extended, the_truth, exchanges, totals = logic(row, the_truth, exchanges, totals)
-        print(row + extended)    
-    return the_truth
+        yield row + extended
+
+def calcTradeStats(input:str, output: str):
+    if output is not None:
+        names = [
+            'LocalTime','Symbol','EventType','Side','FillSize','FillPrice','FillExchange',
+            'SymbolBought','SymbolSold','SymbolPosition','SymbolNotional',
+            'ExchangeBought','ExchangeSold','TotalBought','TotalSold','TotalBoughtNotional','TotalSoldNotional\n'
+            ]
+        with open(output, 'w') as f:
+            f.write(','.join(names))
+            f.writelines(str(row)[1:-1] + '\n' for row in blotter(input))
+    else:
+        for row in blotter(input):
+            print(row)
 
 if __name__ == '__main__':
     args = parcero()

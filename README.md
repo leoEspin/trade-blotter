@@ -63,8 +63,7 @@ The following describes each of the columns:
 7.  FillExchange (string): Name of exchange where the trade was filled
 
 
-PROJECT DEFINITION
-==================
+## PROJECT DEFINITION
 
 The script `calcStats.py` consumes the above CSV file and produces an
 enriched version of the CSV file with the additional columns described
