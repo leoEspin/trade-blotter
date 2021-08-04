@@ -169,3 +169,9 @@ LocalTime,Symbol,EventType,Side,FillSize,FillPrice,FillExchange,SymbolBought,Sym
 9:30:10.000,AIG,TRADE,b,100,56.38,NASDAQ,200,200,0,5638.00,600,500,600,700,14642.00,15390.00
 
 9:30:11.000,AIG,TRADE,t,100,56.72,NASDAQ,200,300,-100,5672.00,600,600,600,800,14642.00,21062.00
+
+## Testing
+
+Run the test suite with (pandas needs to be present)
+
+`python -m test-blotter`
